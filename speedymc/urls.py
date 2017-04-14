@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
 urlpatterns = [
-    url(r'^flash/', include('flash.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^flash/', include('flash.urls')),
 ]

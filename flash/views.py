@@ -4,6 +4,6 @@ from django.template import loader
 import json
 
 def index(request):
-    return HttpResponse("Trying to run this here and there.")
+    return HttpResponse("Trying to run this here and there, plus modifications.")
 
 # Create your views here.
