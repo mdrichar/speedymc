@@ -1,0 +1,19 @@
+{% if factoid_listing %}
+	{% csrf_token %}
+	<div>
+	Name:
+	<input type="text" name="setname" value="">
+	</div>
+	<div>
+	Description:
+	<input type="text" name="setdesc" value="Description of the set">
+        </div>
+	Facts:
+	<div>
+	{% for factoid in factoid_listing %}
+		<div><input type="checkbox" name="problem" value="{{ factoid.id }}" checked="checked">{{ factoid.operand1 }}{{factoid.operator}}{{ factoid.operand2 }}</div>
+        {% endfor %}
+        </div>
+{% else %}
+	<p> No factoids are available </p>
+{% endif %}

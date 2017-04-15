@@ -10,7 +10,7 @@ def index(request):
 def listing(request):
     #factoid_listing = Factoid.objects.all()
     factoid_listing = BinaryFact.objects.all()
-    template = loader.get_template('flash/listing.html')
+    template = loader.get_template('flash/listing_simple.html')
     context = {
         'factoid_listing' : factoid_listing, 
     }
