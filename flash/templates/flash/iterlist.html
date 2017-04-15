@@ -1,0 +1,127 @@
+{% extends 'flash/base.html' %}
+
+{% block javascript %}
+    <script>
+	var index = 0;
+	var factlist;
+	var d = new Date();
+	var lastTime = d.getTime()
+        var startTime = d.getTime()
+	var correctCnt = 0
+        var boutId = 0;
+        var localBout
+        $.ajaxSetup({
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+      function go() {
+	console.log("Last time " + lastTime)
+        //boutId = createBout()
+        //console.log("New bout created: ", boutId);
+	$("#currentTime").html(lastTime)
+	$qsetSelector = $("#qsetSelector")
+	console.log("QsetSelectorElement ", $qsetSelector)
+        qset_id = $("#qsetSelector").val()
+	console.log("QsetSelector value ", qset_id)
+        getFactData(qset_id);
+	$('#times').html("")
+        $("#startb").onclick=function(){}
+        	
+      }
+
+      function createBout() {
+        pdata = {'question_set' : 0}
+        $.post('postcreatebout', pdata, function( data ) { 
+		console.log("Postcreatebout success function" , data )
+                $.each(data, function(key, value) {
+			console.log("BoutItem " + key + ":" + value);
+
+                });
+		this.localBout = data['bout_id']
+		console.log("BoutItem " + this.localBout) 
+	});
+        console.log("createbout response data=", this.localBout)
+	return localBout
+      }
+
+      function getFactData(qset_id) {
+
+          $.ajax({
+              url: 'jsonlisting',
+              data: { 'qset' : qset_id },
+              dataType: 'json',
+              success: function (data) {
+              	console.log("Success function");
+              	$.each(data, function(key, value) {
+              		console.log("Item " + key + ":" + JSON.stringify(value));
+              		console.log("Factoid: " + value.f1 + " * " + value.f2);
+              	});
+              	factlist = data
+		setProblem();
+              }
+          });
+
+       }
+	//go();
+
+	function setProblem() {
+		console.log("setProblem",index)	
+		$("#problem").html("" + factlist[index].f1 + " * " + factlist[index].f2)
+	}
+	function keyPressed() {
+		var x = document.getElementById("response").value;
+		var op1 = factlist[index].f1
+		var op2 = factlist[index].f2
+		if (x == op1 * op2) {
+			correctCnt = correctCnt + 1;
+			processCorrectResponse()
+		}
+
+	}
+	function processCorrectResponse() {
+		console.log("Choose " + index + ": " + factlist[index].f1)
+		var c = new Date();
+		var currentTime = c.getTime(); 
+		console.log("Current time " + currentTime);
+		var elapsed = currentTime - lastTime;
+  		factlist[index].elapsed = elapsed
+		lastTime = currentTime;
+		$("#currentTime").html(elapsed);
+		$p = $('<p>' + elapsed + '</p>')
+		$('#times').append($p);
+		//pdata = { 'fact' : factlist[index], 
+		//		 'bout' : boutId }
+		//console.log('bout to print',boutId);
+		//$.post('postarg', pdata);
+		index = (index + 1) % factlist.length
+		if (index > 0 && index < 20) {
+			setProblem()
+		} else {
+			$('#times').html("")
+			jsonstring = JSON.stringify(factlist);
+			$.ajax({
+				type: "POST",
+				url: 'postbout',
+				data: {'jsons' : jsonstring, csrfmiddlewaretoken: '{{csrf_token}}'},
+				dataType: 'json',
+				success: function (data) { console.log("Success postbout"); }
+			});
+			//$.post('postbout',{'factlist' : $.param(factlist)}); //, function(data) {
+				//console.log("Succeeded in postbout function");
+			//});
+		}
+
+		document.getElementById("response").value = ""; // Clear out response field for next problem
+			//{
+			//url: 'postarg',
+			//data: pdata,
+			//dataType: 'json'
+			//success: function(data) {
+			//	console.log("Post success function");
+			//	},
+			//});
+	}
+	
+    </script>
+
+{% endblock %}

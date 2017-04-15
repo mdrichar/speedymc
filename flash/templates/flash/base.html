@@ -1,0 +1,23 @@
+
+<body>
+<h1>Here is a header</h1>
+{% if qset_listing %}
+<select name="qset" id="qsetSelector">
+	{% for qset in qset_listing %}
+	<option value="{{ qset.id }}">{{ qset.name }}</option>
+	{% endfor %}
+</select>
+{% endif %}
+
+<textarea id="problem"></textarea>
+
+<input type=text onkeyup="keyPressed()" id="response"></input>
+<button id="startb" onclick="go()">Start</button>
+<p id="message"></p>
+<div id="times">
+<p id='currentTime' >Elapsed Time</p>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+{% block javascript %}{%endblock %}
+
+</body>
