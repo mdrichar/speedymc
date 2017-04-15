@@ -60,13 +60,14 @@ def postBout(request):
         bout.question_set = QuestionSet.objects.first()
         bout.save()
         for fact in jsonitems:
-            print(fact)
-            rt = ResponseTiming()
-            rt.bout = bout
-            rt.binary_fact = BinaryFact.objects.filter(pk=fact['id'])[0]
-            rt.elapsed = fact['elapsed']
-            total_elapsed += rt.elapsed
-            rt.save()
+            if 'elapsed' in fact:
+                print(fact)
+                rt = ResponseTiming()
+                rt.bout = bout
+                rt.binary_fact = BinaryFact.objects.filter(pk=fact['id'])[0]
+                rt.elapsed = fact['elapsed']
+                total_elapsed += rt.elapsed
+                rt.save()
         bout.elapsed = total_elapsed
         bout.correct_cnt = len(jsonitems)
         bout.save()
