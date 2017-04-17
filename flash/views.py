@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from .models import QuestionSet, BinaryFact, ResponseTiming, Bout, User
+from .models import QuestionSet, BinaryFact, ResponseTiming, Bout
+from django.contrib.auth.models import User
 import json
 
 def index(request):
@@ -13,6 +14,7 @@ def listing(request):
     template = loader.get_template('flash/listing.html')
     context = {
         'factoid_listing' : factoid_listing, 
+	'logged_in_user' : request.user,
     }
     return HttpResponse(template.render(context,request))
 # Create your views here.
@@ -56,7 +58,7 @@ def postBout(request):
     total_elapsed = 0
     if len(jsonitems) > 0:
         bout = Bout()
-        bout.user = User.objects.first()
+        bout.user = User.objects.filter(id=request.user.id)[0]
         bout.question_set = QuestionSet.objects.first()
         bout.save()
         for fact in jsonitems:

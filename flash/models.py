@@ -1,14 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-
-class Factoid(models.Model):
-    fid = models.IntegerField(default=0)
-    factor1 = models.IntegerField(default=0)
-    factor2 = models.IntegerField(default=0)
-
-    def __str__(self):
-        return str(self.factor1) + "*" + str(self.factor2) + "=" + str(self.factor1*self.factor2)
 
 class BinaryFact(models.Model):
     operand1 = models.IntegerField(default=0)
@@ -17,12 +10,6 @@ class BinaryFact(models.Model):
 
     def __str__(self):
         return str(self.operand1) + self.operator + str(self.operand2)
-
-class User(models.Model):
-    name = models.CharField(max_length=40);
-
-    def __str__(self):
-        return str(self.name) 
 
 class QuestionSet(models.Model):
     name = models.CharField(max_length=40)
