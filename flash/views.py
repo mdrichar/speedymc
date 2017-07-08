@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from .models import QuestionSet, BinaryFact, ResponseTiming, Bout
 from django.contrib.auth.models import User
+from django.db import connection
 import json
 
 def index(request):
@@ -51,15 +52,27 @@ def jsonlisting(request):
     response_data = json.dumps(to_json)
     return HttpResponse(response_data)
 
+def timingListing(request):
+    qset_id = request.GET['qset']
+    user_id = request.GET['user']
+    print("timingListing got called with qset ", qset_id, user_id )
+    to_json = []
+    with connection.cursor() as cursor:
+        cursor.execute("select au.username, question_set_id, fb.id, fb.elapsed from auth_user as au, flash_bout as fb where fb.user_id=au.id and question_set_id=%s and au.id=%s; ", [qset_id, user_id])
+        to_json.append(cursor.fetchall())
+    response_data = json.dumps(to_json)
+    return HttpResponse(response_data)
+
 def postBout(request):
     print("Post Bout")
     print(request.POST['jsons'])
+    print(request.POST['qset_id'])
     jsonitems = json.loads(request.POST['jsons'])
     total_elapsed = 0
     if len(jsonitems) > 0:
         bout = Bout()
         bout.user = User.objects.filter(id=request.user.id)[0]
-        bout.question_set = QuestionSet.objects.first()
+        bout.question_set = QuestionSet.objects.filter(id=request.POST['qset_id'])[0]
         bout.save()
         for fact in jsonitems:
             if 'elapsed' in fact:
@@ -95,6 +108,23 @@ def iterlist(request):
 	'qset_listing' : qsets
     }
     return HttpResponse(template.render(context,request))
+
+def topscores(request):
+    template = loader.get_template('flash/topscores.html')
+    timings = ResponseTiming.objects.all()
+    user_listing = User.objects.all()
+    qsets = QuestionSet.objects.all()
+    context = {
+	'timing_listing' : timings,
+	'user_listing' : user_listing,
+	'qset_listing' : qsets
+    }
+    return HttpResponse(template.render(context,request))
+
+def selgrid(request):
+   template = loader.get_template('flash/selgrid.html')
+   context = {}
+   return HttpResponse(template.render(context,request))
 
 
 # Create your views here.

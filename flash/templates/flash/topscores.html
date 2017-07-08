@@ -1,0 +1,71 @@
+
+<body>
+<h1>Top Scores</h1>
+{% if user_listing %}
+<select name="user" id="userSelector">
+	{% for user in user_listing %}
+	<option value="{{ user.id }}">{{ user.username }}</option>
+	{% endfor %}
+</select>
+{% endif %}
+{% if qset_listing %}
+<select name="qset" id="qsetSelector">
+	{% for qset in qset_listing %}
+	<option value="{{ qset.id }}">{{ qset.name }}</option>
+	{% endfor %}
+</select>
+{% endif %}
+
+<div id="useritem">
+</div>
+<div id="qsetitem">
+</div>
+<div id="scoretable">
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+</body>
+{% block javascript %}
+
+<script>
+	console.log("Yipee")
+</script>
+
+<script>
+      $qsetSelector = $("#qsetSelector")
+      console.log("QsetSelectorElement ", $qsetSelector)
+      $userSelector = $("#userSelector")
+      console.log("QsetSelectorElement ", $userSelector)
+      function itemChanged() {
+	console.log("Item Changed" )
+	$('#useritem').html($('#userSelector option:selected').text())
+	$('#qsetitem').html($qsetSelector.text())
+	$('#scoretable').empty()
+          $.ajax({
+              url: 'timingListing',
+              data: { 'qset' : $qsetSelector.val(), 'user' : $userSelector.val() },
+              dataType: 'json',
+              success: function (data) {
+              	console.log("Success function for itemChanged");
+              	$.each(data, function(key, value) {
+              		console.log("Item " + key + ":" + JSON.stringify(value));
+			$.each(value, function(key1, value1) {
+				console.log("I" + key1 + ":" +value1)
+					console.log(value1[i])
+					$r = '<div>' + value1[2] + ' ' + value1[3] + '</div>'
+					$('#scoretable').append($r)
+			});
+              	});
+              }
+          });
+	for (i = 0; i < 3; i++) {
+	}
+        //boutId = createBout()
+        //console.log("New bout created: ", boutId);
+        	
+      }
+      $qsetSelector.on('change',itemChanged)
+      $userSelector.on('change',itemChanged)
+
+</script>
+{%endblock %}

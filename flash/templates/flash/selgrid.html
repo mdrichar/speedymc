@@ -1,0 +1,57 @@
+{% load static %}
+<body>
+<h1>Select Grid</h1>
+<div>
+Hello
+</div>
+<div class="wrapper">
+  <div class="box"><input type=checkbox id="r0c0" class="all row0 col0"/></div>
+  <div class="box"><input type=checkbox id="r0c1" class="all row0 col1"/></div>
+  <div class="box"><input type=checkbox id="r0c2" class="all row0 col2"/></div>
+<div class="box"><input type=checkbox id="r1c0" class="all row1 col0"/></div>
+  <div class="box"><input type=checkbox id="r1c1" class="all row1 col1"/></div>
+  <div class="box"><input type=checkbox id="r1c2" class="all row1 col2"/></div>
+    <div class="box"><input type=checkbox id="r2c0" class="all row2 col0"/></div>
+  <div class="box"><input type=checkbox id="r2c1" class="all row2 col1"/></div>
+  <div class="box"><input type=checkbox id="r2c2" class="all row2 col2"/></div>
+
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'flash/style.css' %}" />
+
+</body>
+{% block javascript %}
+
+<script>
+	console.log("Yipee")
+</script>
+
+<script>
+
+function doSomething(item) {
+	console.log("Do something" + item)
+}
+function toggleRow() {
+   console.log("toggleRow")
+   $(".row1").prop('checked',this.checked)
+}
+
+function toggleCol() {
+   console.log("toggleCol")
+   $(".col1").prop('checked',this.checked)
+}
+
+function toggleAll() {
+   console.log("toggleAll")
+   $(".all").prop('checked',this.checked)
+}
+
+$("#r0c0").on('change',toggleAll)
+$("#r0c1").on('change',toggleCol)
+$("#r1c0").on('change',toggleRow)
+console.log("B")
+
+
+</script>
+{%endblock %}

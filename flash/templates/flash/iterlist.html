@@ -10,6 +10,7 @@
 	var correctCnt = 0
         var boutId = 0;
         var localBout
+	var g_qset_id = 0;
         $.ajaxSetup({
           data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
         });
@@ -45,7 +46,7 @@
       }
 
       function getFactData(qset_id) {
-
+	  g_qset_id = qset_id
           $.ajax({
               url: 'jsonlisting',
               data: { 'qset' : qset_id },
@@ -94,7 +95,7 @@
 		//console.log('bout to print',boutId);
 		//$.post('postarg', pdata);
 		index = (index + 1) % factlist.length
-		if (index > 0 && index < 5) {
+		if (index > 0ter ) {
 			setProblem()
 		} else {
 			$('#times').html("")
@@ -102,7 +103,7 @@
 			$.ajax({
 				type: "POST",
 				url: 'postbout',
-				data: {'jsons' : jsonstring, csrfmiddlewaretoken: '{{csrf_token}}'},
+				data: {jsons : jsonstring, qset_id : g_qset_id, csrfmiddlewaretoken: '{{csrf_token}}' },
 				dataType: 'json',
 				success: function (data) { console.log("Success postbout"); }
 			});
@@ -123,5 +124,4 @@
 	}
 	
     </script>
-
 {% endblock %}

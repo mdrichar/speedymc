@@ -12,7 +12,7 @@
 	<div>{{ logged_in_user }}</div>
 	Facts:
 	{% for factoid in factoid_listing %}
-		<div><input type="checkbox" name="problem" value="{{ factoid.id }}" checked="checked">{{ factoid.operand1 }}{{factoid.operator}}{{ factoid.operand2 }}</div>
+		<div><input type="checkbox" name="problem" value="{{ factoid.id }}" >{{ factoid.operand1 }}{{factoid.operator}}{{ factoid.operand2 }}</div>
         {% endfor %}
 	<input type="submit" value="subsetq"/>
 	</form>
