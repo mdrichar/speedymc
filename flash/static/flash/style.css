@@ -1,0 +1,45 @@
+
+body {
+  margin: 40px;
+}
+
+h1 {
+  color: green;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-gap: 10px;
+  background-color: #fff;
+  color: #444;
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+}
+
+#problem {
+  font-family:"Times New Roman", Times, serif;
+  font-size: 60px;
+  background-color: #CCC;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+other {
+  resize: none;
+  outline: none;
+  border: 2px solid;
+  display: block;
+  padding: 0;
+  top: 0;
+
+}

@@ -1,6 +1,5 @@
-
-<body>
-<h1>Here is a header</h1>
+{% load static %}
+<h1>Here is another header</h1>
 {% if qset_listing %}
 <select name="qset" id="qsetSelector">
 	{% for qset in qset_listing %}
@@ -9,7 +8,7 @@
 </select>
 {% endif %}
 
-<textarea id="problem"></textarea>
+<textarea id="problem">12x20</textarea>
 
 <input type=text onkeyup="keyPressed()" id="response"></input>
 <button id="startb" onclick="go()">Start</button>
@@ -18,6 +17,7 @@
 <p id='currentTime' >Elapsed Time</p>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'flash/style.css' %}" />
 {% block javascript %}{%endblock %}
 
 </body>
